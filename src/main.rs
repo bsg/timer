@@ -19,6 +19,15 @@ fn main() {
 
     let mut remaining = duration;
     loop {
+        print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+
+        println!(
+            "{:02}:{:02}:{:02}",
+            (remaining.as_secs() / 60) / 60,
+            (remaining.as_secs() / 60) % 60,
+            remaining.as_secs() % 60
+        );
+
         if remaining.is_zero() {
             Command::new(&args.command)
                 .args(&args.args)
@@ -29,15 +38,8 @@ fn main() {
                 false => break,
             }
         };
-
-        print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
-        println!(
-            "{:02}:{:02}:{:02}",
-            (remaining.as_secs() / 60) / 60,
-            (remaining.as_secs() / 60) % 60,
-            remaining.as_secs() % 60
-        );
-        thread::sleep(Duration::from_millis(200));
-        remaining -= Duration::from_millis(200);
+        
+        thread::sleep(Duration::from_millis(1000));
+        remaining -= Duration::from_millis(1000);
     }
 }
